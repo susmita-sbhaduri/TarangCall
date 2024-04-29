@@ -7,6 +7,7 @@ package org.bhaduri.tarangcall.generate;
 import java.util.ArrayList;
 import java.util.List;
 import org.bhaduri.tarangcall.TARANGPARAMS;
+import org.bhaduri.tarangdto.CallResultsForEachLayer;
 import org.bhaduri.tarangdto.LastTransactionPrice;
 
 /**
@@ -24,7 +25,7 @@ public class CallCreation {
         this.callGenerationLavel = callGenerationLavel;
     }
 
-    public List<LastTransactionPrice> generateCalls() {
+    public CallResultsForEachLayer generateCalls() {
         //TarangUtils.printLTP(inputLastTransationPriceList);
         outputLastTransationPriceList = new ArrayList<>();
         outputLastTransationPriceList.add(inputLastTransationPriceList.get(0));
@@ -166,9 +167,15 @@ public class CallCreation {
             }
 
         }
-
+        
         outputLastTransationPriceList.add(inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 1));
-        return outputLastTransationPriceList;
+        CallResultsForEachLayer callResultsForEachLayer = new CallResultsForEachLayer();
+        callResultsForEachLayer.setLastCallVersionOne(lastCallVersionOne);
+        callResultsForEachLayer.setLastCallVersionTwo(lastCallVersionTwo);
+        callResultsForEachLayer.setRetraceVersionOne(retraceVersionOne);
+        callResultsForEachLayer.setRetraceVersionTwo(retraceVersionTwo);
+        callResultsForEachLayer.setOutputLastTransationPriceList(outputLastTransationPriceList);
+        return callResultsForEachLayer;
     }
 
 }
