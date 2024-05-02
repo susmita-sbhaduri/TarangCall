@@ -4,11 +4,13 @@
  */
 package org.bhaduri.tarangcall.generate;
 
+import java.util.Date;
 import java.util.List;
 import org.bhaduri.tarangcall.TARANGPARAMS;
 import org.bhaduri.tarangcall.utils.TarangUtils;
 import org.bhaduri.tarangdbservice.services.MasterDataServices;
-import org.bhaduri.tarangdto.CallResultsInermediate;
+import org.bhaduri.tarangdto.CallResults;
+import org.bhaduri.tarangdto.CallResultsIntermediate;
 import org.bhaduri.tarangdto.LastTransactionPrice;
 
 /**
@@ -22,6 +24,7 @@ public class CallGenerationLayers {
     private Double retraceVersionTwo;
     private String callVersionOne;
     private Double retraceVersionOne;
+    private Date callGenerationTimeStamp;
     private String scripid;
 
     public CallGenerationLayers(String scripid) {
@@ -29,27 +32,30 @@ public class CallGenerationLayers {
     }
 
     public void smoothAndCallCreate() {
-        List<LastTransactionPrice> lastTransactrionPriceList = getScripLastTransactionPriceList(scripid);
-        CallResultsInermediate callResultsInermediate = new CallResultsInermediate(lastTransactrionPriceList);
+        CallResultsIntermediate callResultsIntermediate = getScripLastTransactionPriceList(scripid);
+        
         
 
         for (int i = 1; i < TARANGPARAMS.CALL_GENERATION_LAYERS + 1; i++) {
 
-            callResultsInermediate = new SmoothData(callResultsInermediate.getIntermediateLTPList(), i).removeDupsAndKeepReversals().generateCalls();
-            TarangUtils.printLTP(callResultsInermediate.getIntermediateLTPList());
+            callResultsIntermediate = new SmoothData(callResultsIntermediate, i).removeDupsAndKeepReversals().generateCalls();
+            //TarangUtils.printLTP(callResultsIntermediate.getIntermediateLTPList());
 
         }
-        callVersionOne = callResultsInermediate.getLastCallVersionOne();
-        retraceVersionOne = callResultsInermediate.getRetraceVersionOne();
-        callVersionTwo = callResultsInermediate.getLastCallVersionTwo();
-        retraceVersionTwo = callResultsInermediate.getRetraceVersionTwo();
+        callVersionOne = callResultsIntermediate.getCallVersionOne();
+        retraceVersionOne = callResultsIntermediate.getRetraceVersionOne();
+        callVersionTwo = callResultsIntermediate.getCallVersionTwo();
+        retraceVersionTwo = callResultsIntermediate.getRetraceVersionTwo();
+        callGenerationTimeStamp = callResultsIntermediate.getCallGenerationTimeStamp();
+        System.out.println(callVersionOne+" "+callVersionTwo+" "+callGenerationTimeStamp);
+        CallResults callResults = callResultsIntermediate;
         
     }
     
-    private List<LastTransactionPrice> getScripLastTransactionPriceList(String scripid) {
+    private CallResultsIntermediate getScripLastTransactionPriceList(String scripid) {
         MasterDataServices mds = new MasterDataServices();
         
-        List<LastTransactionPrice> lastTransactrionPriceList = mds.getLastTransactionPriceList(scripid);
-        return lastTransactrionPriceList;
+        CallResultsIntermediate callResultsInermediate = mds.getLastTransactionPriceList(scripid);
+        return callResultsInermediate;
     }
 }

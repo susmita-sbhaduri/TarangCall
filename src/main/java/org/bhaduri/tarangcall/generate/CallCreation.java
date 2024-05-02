@@ -7,7 +7,7 @@ package org.bhaduri.tarangcall.generate;
 import java.util.ArrayList;
 import java.util.List;
 import org.bhaduri.tarangcall.TARANGPARAMS;
-import org.bhaduri.tarangdto.CallResultsInermediate;
+import org.bhaduri.tarangdto.CallResultsIntermediate;
 import org.bhaduri.tarangdto.LastTransactionPrice;
 
 /**
@@ -15,18 +15,21 @@ import org.bhaduri.tarangdto.LastTransactionPrice;
  * @author bhaduri
  */
 public class CallCreation {
-
+    
+    private CallResultsIntermediate callResultsIntermediate;
     private List<LastTransactionPrice> inputLastTransationPriceList;
     private int callGenerationLavel;
     private List<LastTransactionPrice> outputLastTransationPriceList;
 
-    public CallCreation(List<LastTransactionPrice> trendReversalPricesWithNoConsDups, int callGenerationLavel) {
-        this.inputLastTransationPriceList = trendReversalPricesWithNoConsDups;
+    public CallCreation(CallResultsIntermediate callResultsIntermediate, int callGenerationLavel) {
+        this.callResultsIntermediate = callResultsIntermediate;
+        
         this.callGenerationLavel = callGenerationLavel;
     }
 
-    public CallResultsInermediate generateCalls() {
+    public CallResultsIntermediate generateCalls() {
         //TarangUtils.printLTP(inputLastTransationPriceList);
+        this.inputLastTransationPriceList = callResultsIntermediate.getIntermediateLTPList();
         outputLastTransationPriceList = new ArrayList<>();
         outputLastTransationPriceList.add(inputLastTransationPriceList.get(0));
         int startLevelOne = 0;
@@ -169,8 +172,13 @@ public class CallCreation {
         }
         
         outputLastTransationPriceList.add(inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 1));
-        CallResultsInermediate callResultsForEachLayer = new CallResultsInermediate(lastCallVersionOne,lastCallVersionTwo,retraceVersionOne,retraceVersionTwo,outputLastTransationPriceList);
-        return callResultsForEachLayer;
+        callResultsIntermediate.setIntermediateLTPList(outputLastTransationPriceList);
+        callResultsIntermediate.setCallVersionOne(lastCallVersionOne);
+        callResultsIntermediate.setCallVersionTwo(lastCallVersionTwo);
+        callResultsIntermediate.setRetraceVersionOne(retraceVersionOne);
+        callResultsIntermediate.setRetraceVersionTwo(retraceVersionTwo);
+        
+        return callResultsIntermediate;
     }
 
 }

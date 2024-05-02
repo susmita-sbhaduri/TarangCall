@@ -7,6 +7,7 @@ package org.bhaduri.tarangcall.generate;
 import java.util.ArrayList;
 import java.util.List;
 import org.bhaduri.tarangcall.TARANGPARAMS;
+import org.bhaduri.tarangdto.CallResultsIntermediate;
 import org.bhaduri.tarangdto.LastTransactionPrice;
 
 /**
@@ -14,15 +15,16 @@ import org.bhaduri.tarangdto.LastTransactionPrice;
  * @author bhaduri
  */
 public class SmoothData {
-
+    CallResultsIntermediate callResultsIntermediate;
     private List<LastTransactionPrice> lastTransactrionPriceList;
     private int callGenerationLavel;
-    public SmoothData(List<LastTransactionPrice> lastTransactrionPriceList, int callGenerationLavel) {
-        this.lastTransactrionPriceList = lastTransactrionPriceList;
+    public SmoothData(CallResultsIntermediate callResultsIntermediate, int callGenerationLavel) {
+        this.callResultsIntermediate = callResultsIntermediate;
         this.callGenerationLavel = callGenerationLavel;
     }
 
     public CallCreation removeDupsAndKeepReversals() {
+        lastTransactrionPriceList = callResultsIntermediate.getIntermediateLTPList();
         List<Double> consecutiveDiffLTP = new ArrayList<>();
         for (int i = 0; i < lastTransactrionPriceList.size() - 1; i++) {
             consecutiveDiffLTP.add(lastTransactrionPriceList.get(i + 1).getLastTransactionPrice() - lastTransactrionPriceList.get(i).getLastTransactionPrice());
@@ -55,7 +57,8 @@ public class SmoothData {
             smoothenedLTPCounter++;
         }
         trendReversalPricesWithNoConsDups.add(lastTransactrionPriceList.get(smoothenedLTPCounter));
-        CallCreation callCreation = new CallCreation(trendReversalPricesWithNoConsDups,callGenerationLavel);
+        callResultsIntermediate.setIntermediateLTPList(trendReversalPricesWithNoConsDups);
+        CallCreation callCreation = new CallCreation(callResultsIntermediate,callGenerationLavel);
         return callCreation;
         //return (trendReversalPricesWithNoConsDups);
         //TarangUtils.printLTP(trendReversalPricesWithNoConsDups);
