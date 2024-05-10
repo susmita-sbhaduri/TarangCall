@@ -4,7 +4,9 @@
 
 package org.bhaduri.tarangcall;
 
-import org.bhaduri.tarangcall.generate.CallGenerationLayers;
+import org.bhaduri.tarangcall.generate.CallFactory;
+import org.bhaduri.tarangcall.scrips.Scrips;
+import org.bhaduri.tarangdto.CallResults;
 
 
 /**
@@ -15,6 +17,9 @@ public class TarangCall {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        new CallGenerationLayers("ADANIENT").smoothAndCallCreate();
+        CallFactory cf = new CallFactory();
+//        CallResults callResults = cf.generateCall("ADANIENT");
+        Scrips scrips = new Scrips();
+        scrips.getScripList().stream().forEach(s->cf.generateCall(s.getScripId()));
     }
 }

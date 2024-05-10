@@ -17,38 +17,32 @@ import org.bhaduri.tarangdto.LastTransactionPrice;
  *
  * @author bhaduri
  */
-public class CallGenerationLayers {
+public class CallFactory {
 
     
-    private String callVersionTwo;
-    private Double retraceVersionTwo;
-    private String callVersionOne;
-    private Double retraceVersionOne;
-    private Date callGenerationTimeStamp;
-    private String scripid;
 
-    public CallGenerationLayers(String scripid) {
-        this.scripid = scripid;
-    }
 
-    public void smoothAndCallCreate() {
+
+    public CallResults generateCall(String scripid) {
         CallResultsIntermediate callResultsIntermediate = getScripLastTransactionPriceList(scripid);
         
         
 
         for (int i = 1; i < TARANGPARAMS.CALL_GENERATION_LAYERS + 1; i++) {
 
-            callResultsIntermediate = new SmoothData(callResultsIntermediate, i).removeDupsAndKeepReversals().generateCalls();
+            callResultsIntermediate = new SmoothData(callResultsIntermediate, i).removeDupsAndKeepReversals().analyseTrendLayers();
             //TarangUtils.printLTP(callResultsIntermediate.getIntermediateLTPList());
 
         }
-        callVersionOne = callResultsIntermediate.getCallVersionOne();
-        retraceVersionOne = callResultsIntermediate.getRetraceVersionOne();
-        callVersionTwo = callResultsIntermediate.getCallVersionTwo();
-        retraceVersionTwo = callResultsIntermediate.getRetraceVersionTwo();
-        callGenerationTimeStamp = callResultsIntermediate.getCallGenerationTimeStamp();
-        System.out.println(callVersionOne+" "+callVersionTwo+" "+callGenerationTimeStamp);
+//        callVersionOne = callResultsIntermediate.getCallVersionOne();
+//        retraceVersionOne = callResultsIntermediate.getRetraceVersionOne();
+//        callVersionTwo = callResultsIntermediate.getCallVersionTwo();
+//        retraceVersionTwo = callResultsIntermediate.getRetraceVersionTwo();
+//        callGenerationTimeStamp = callResultsIntermediate.getCallGenerationTimeStamp();
+        
         CallResults callResults = callResultsIntermediate;
+        System.out.println(scripid+" : "+callResults.getCallVersionOne()+" "+callResults.getCallVersionTwo()+" "+callResults.getCallGenerationTimeStamp());
+        return callResults;
         
     }
     

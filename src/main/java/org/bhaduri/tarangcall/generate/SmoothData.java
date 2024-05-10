@@ -23,7 +23,7 @@ public class SmoothData {
         this.callGenerationLavel = callGenerationLavel;
     }
 
-    public CallCreation removeDupsAndKeepReversals() {
+    public Trends removeDupsAndKeepReversals() {
         lastTransactrionPriceList = callResultsIntermediate.getIntermediateLTPList();
         List<Double> consecutiveDiffLTP = new ArrayList<>();
         for (int i = 0; i < lastTransactrionPriceList.size() - 1; i++) {
@@ -58,7 +58,7 @@ public class SmoothData {
         }
         trendReversalPricesWithNoConsDups.add(lastTransactrionPriceList.get(smoothenedLTPCounter));
         callResultsIntermediate.setIntermediateLTPList(trendReversalPricesWithNoConsDups);
-        CallCreation callCreation = new CallCreation(callResultsIntermediate,callGenerationLavel);
+        Trends callCreation = new Trends(callResultsIntermediate,callGenerationLavel);
         return callCreation;
         //return (trendReversalPricesWithNoConsDups);
         //TarangUtils.printLTP(trendReversalPricesWithNoConsDups);

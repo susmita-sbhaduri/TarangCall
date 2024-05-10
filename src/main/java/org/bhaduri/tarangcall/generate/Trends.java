@@ -14,20 +14,20 @@ import org.bhaduri.tarangdto.LastTransactionPrice;
  *
  * @author bhaduri
  */
-public class CallCreation {
+public class Trends {
     
     private CallResultsIntermediate callResultsIntermediate;
     private List<LastTransactionPrice> inputLastTransationPriceList;
     private int callGenerationLavel;
     private List<LastTransactionPrice> outputLastTransationPriceList;
 
-    public CallCreation(CallResultsIntermediate callResultsIntermediate, int callGenerationLavel) {
+    public Trends(CallResultsIntermediate callResultsIntermediate, int callGenerationLavel) {
         this.callResultsIntermediate = callResultsIntermediate;
         
         this.callGenerationLavel = callGenerationLavel;
     }
 
-    public CallResultsIntermediate generateCalls() {
+    public CallResultsIntermediate analyseTrendLayers() {
         //TarangUtils.printLTP(inputLastTransationPriceList);
         this.inputLastTransationPriceList = callResultsIntermediate.getIntermediateLTPList();
         outputLastTransationPriceList = new ArrayList<>();
