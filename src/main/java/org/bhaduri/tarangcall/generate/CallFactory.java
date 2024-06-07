@@ -18,32 +18,15 @@ import org.bhaduri.tarangdto.LastTransactionPrice;
  * @author bhaduri
  */
 public class CallFactory {
-
-    
-
-
-
     public CallResults generateCall(String scripid) {
         CallResultsIntermediate callResultsIntermediate = getScripLastTransactionPriceList(scripid);
-        
-        
-
         for (int i = 1; i < TARANGPARAMS.CALL_GENERATION_LAYERS + 1; i++) {
-
             callResultsIntermediate = new SmoothData(callResultsIntermediate, i).removeDupsAndKeepReversals().analyseTrendLayers();
             //TarangUtils.printLTP(callResultsIntermediate.getIntermediateLTPList());
-
-        }
-//        callVersionOne = callResultsIntermediate.getCallVersionOne();
-//        retraceVersionOne = callResultsIntermediate.getRetraceVersionOne();
-//        callVersionTwo = callResultsIntermediate.getCallVersionTwo();
-//        retraceVersionTwo = callResultsIntermediate.getRetraceVersionTwo();
-//        callGenerationTimeStamp = callResultsIntermediate.getCallGenerationTimeStamp();
-        
+        }        
         CallResults callResults = callResultsIntermediate;
         System.out.println(scripid+" : "+callResults.getCallVersionOne()+" "+callResults.getCallVersionTwo()+" "+callResults.getCallGenerationTimeStamp());
-        return callResults;
-        
+        return callResults;        
     }
     
     private CallResultsIntermediate getScripLastTransactionPriceList(String scripid) {
