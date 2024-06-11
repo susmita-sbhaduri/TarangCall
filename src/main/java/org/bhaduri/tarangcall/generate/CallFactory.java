@@ -18,21 +18,20 @@ import org.bhaduri.tarangdto.LastTransactionPrice;
  * @author bhaduri
  */
 public class CallFactory {
-    public CallResults generateCall(String scripid) {
-        CallResultsIntermediate callResultsIntermediate = getScripLastTransactionPriceList(scripid);
+    CallResultsIntermediate callResultsIntermediate;
+
+    public CallFactory(CallResultsIntermediate callResultsIntermediate) {
+        this.callResultsIntermediate = callResultsIntermediate;
+    }
+    
+    public CallResults generateCall() {
+        //CallResultsIntermediate callResultsIntermediate = getScripLastTransactionPriceList(scripid);
         for (int i = 1; i < TARANGPARAMS.CALL_GENERATION_LAYERS + 1; i++) {
             callResultsIntermediate = new SmoothData(callResultsIntermediate, i).removeDupsAndKeepReversals().analyseTrendLayers();
             //TarangUtils.printLTP(callResultsIntermediate.getIntermediateLTPList());
         }        
         CallResults callResults = callResultsIntermediate;
-        System.out.println(scripid+" : "+callResults.getCallVersionOne()+" "+callResults.getCallVersionTwo()+" "+callResults.getCallGenerationTimeStamp());
+        System.out.println(callResults.getScripId()+" : "+callResults.getCallVersionOne()+" "+callResults.getCallVersionTwo()+" "+callResults.getCallGenerationTimeStamp());
         return callResults;        
-    }
-    
-    private CallResultsIntermediate getScripLastTransactionPriceList(String scripid) {
-        MasterDataServices mds = new MasterDataServices();
-        
-        CallResultsIntermediate callResultsInermediate = mds.getLastTransactionPriceList(scripid);
-        return callResultsInermediate;
     }
 }
