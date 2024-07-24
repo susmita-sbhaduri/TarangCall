@@ -4,9 +4,12 @@
 
 package org.bhaduri.tarangcall;
 
-import org.bhaduri.tarangcall.generate.CallFactory;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.bhaduri.tarangcall.scrips.ScripPrices;
 import org.bhaduri.tarangcall.scrips.Scrips;
+import org.bhaduri.tarangdbservice.services.MasterDataServices;
 import org.bhaduri.tarangdto.CallResults;
 
 
@@ -20,7 +23,12 @@ public class TarangCall {
         System.out.println("Hello World!");
         //CallFactory cf = new CallFactory();
 //        CallResults callResults = cf.generateCall("ADANIENT");
-        Scrips scrips = new Scrips();
-        scrips.getScripList().stream().forEach(s-> new ScripPrices(s).getCallFactory().generateCall());
+        new Scrips().getScripList().stream().forEach(s-> {
+            new ScripPrices(s).getCallFactory().generateCall().insertResults();
+            });
+        
+        //callResultsList.stream().forEach(c->System.out.println(c.getCallGenerationTimeStamp()+" "+c.getCallVersionOne()+" "+" "+c.getCallVersionTwo()));
+        //MasterDataServices mds = new MasterDataServices();
+        //mds.insterCallsInTable(callResultsList);
     }
 }
