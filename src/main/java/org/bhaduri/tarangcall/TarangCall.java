@@ -20,7 +20,7 @@ import org.bhaduri.tarangdto.CallResults;
 public class TarangCall {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.out.println("Hello Worlds!");
         //CallFactory cf = new CallFactory();
 //        CallResults callResults = cf.generateCall("ADANIENT");
         new Scrips().getScripList().stream().forEach(s-> {
