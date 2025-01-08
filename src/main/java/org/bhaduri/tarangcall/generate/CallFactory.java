@@ -8,6 +8,7 @@ import org.bhaduri.tarangcall.TARANGPARAMS;
 import org.bhaduri.tarangcall.results.Results;
 import org.bhaduri.tarangdto.CallResults;
 import org.bhaduri.tarangdto.CallResultsIntermediate;
+import org.bhaduri.tarangdto.VolumeIntermediate;
 
 /**
  *
@@ -15,15 +16,25 @@ import org.bhaduri.tarangdto.CallResultsIntermediate;
  */
 public class CallFactory {
     CallResultsIntermediate callResultsIntermediate;
-
-    public CallFactory(CallResultsIntermediate callResultsIntermediate) {
+    VolumeIntermediate listOfVolumePerScripIdIntermediate;
+    
+    public CallFactory(CallResultsIntermediate callResultsIntermediate, 
+            VolumeIntermediate listOfVolumePerScripIdIntermediate) {
         this.callResultsIntermediate = callResultsIntermediate;
+        this.listOfVolumePerScripIdIntermediate = listOfVolumePerScripIdIntermediate;
     }
+    
     
     public Results generateCall() {
         //CallResultsIntermediate callResultsIntermediate = getScripLastTransactionPriceList(scripid);
+//        VolumeIntermediate listOfVolumePerScripIdOutput;
+        for (int i = 1; i < 3; i++) {
+            listOfVolumePerScripIdIntermediate = new SmoothData(listOfVolumePerScripIdIntermediate).removeDupsAndKeepReversalsVolume();
+        }    
+        
         for (int i = 1; i < TARANGPARAMS.CALL_GENERATION_LAYERS + 1; i++) {
-            callResultsIntermediate = new SmoothData(callResultsIntermediate, i).removeDupsAndKeepReversals().analyseTrendLayers();
+            callResultsIntermediate = new SmoothData(callResultsIntermediate, i, 
+                    listOfVolumePerScripIdIntermediate.getTrendFlag()).removeDupsAndKeepReversals().analyseTrendLayers();
             //TarangUtils.printLTP(callResultsIntermediate.getIntermediateLTPList());
         }        
         CallResults callResults = callResultsIntermediate;

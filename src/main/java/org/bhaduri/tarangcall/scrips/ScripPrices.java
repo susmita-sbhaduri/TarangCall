@@ -4,11 +4,12 @@
  */
 package org.bhaduri.tarangcall.scrips;
 
-import java.util.List;
+
 import org.bhaduri.tarangcall.generate.CallFactory;
 import org.bhaduri.tarangdbservice.services.MasterDataServices;
 import org.bhaduri.tarangdto.CallResultsIntermediate;
 import org.bhaduri.tarangdto.ScripsDTO;
+import org.bhaduri.tarangdto.VolumeIntermediate;
 
 /**
  *
@@ -26,7 +27,10 @@ public class ScripPrices {
         MasterDataServices mds = new MasterDataServices();
         
         CallResultsIntermediate callResultsInermediate = mds.getLastTransactionPriceList(scripsDTO.getScripId());
-        CallFactory callFactory = new CallFactory(callResultsInermediate);
+        
+        VolumeIntermediate listOfVolumePerScripId = mds.getLastTransactionVolumeList(scripsDTO.getScripId());
+//        CallFactory callFactory = new CallFactory(callResultsInermediate);
+        CallFactory callFactory = new CallFactory(callResultsInermediate, listOfVolumePerScripId);
         return callFactory;
     }
     

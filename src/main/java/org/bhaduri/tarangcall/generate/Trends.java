@@ -20,11 +20,13 @@ public class Trends {
     private List<LastTransactionPrice> inputLastTransationPriceList;
     private int callGenerationLavel;
     private List<LastTransactionPrice> outputLastTransationPriceList;
+    private int volumeTrendFlag;
 
-    public Trends(CallResultsIntermediate callResultsIntermediate, int callGenerationLavel) {
-        this.callResultsIntermediate = callResultsIntermediate;
-        
+    public Trends(CallResultsIntermediate callResultsIntermediate, int callGenerationLavel,
+            int volumeTrendFlag) {
+        this.callResultsIntermediate = callResultsIntermediate;        
         this.callGenerationLavel = callGenerationLavel;
+        this.volumeTrendFlag = volumeTrendFlag;
     }
 
     public CallResultsIntermediate analyseTrendLayers() {
@@ -34,7 +36,7 @@ public class Trends {
         outputLastTransationPriceList.add(inputLastTransationPriceList.get(0));
         int startLevelOne = 0;
         int trendFlag = TARANGPARAMS.UNKNOWN_TREND;
-        String call = "";
+        String call = "";        
         //process the first 2nd 3rd and 4th data points
         if (inputLastTransationPriceList.get(1).getLastTransactionPrice() > inputLastTransationPriceList.get(2).getLastTransactionPrice()) {
             startLevelOne = 3; //starting with second point rising above the first, so 4th element onwards comparison done
