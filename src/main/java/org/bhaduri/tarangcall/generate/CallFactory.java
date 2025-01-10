@@ -28,9 +28,9 @@ public class CallFactory {
     public Results generateCall() {
         //CallResultsIntermediate callResultsIntermediate = getScripLastTransactionPriceList(scripid);
 //        VolumeIntermediate listOfVolumePerScripIdOutput;
-        for (int i = 1; i < 3; i++) {
-            listOfVolumePerScripIdIntermediate = new SmoothData(listOfVolumePerScripIdIntermediate).removeDupsAndKeepReversalsVolume();
-        }    
+        
+        listOfVolumePerScripIdIntermediate = new SmoothData(listOfVolumePerScripIdIntermediate).removeDupsAndKeepReversalsVolume();
+            
         
         for (int i = 1; i < TARANGPARAMS.CALL_GENERATION_LAYERS + 1; i++) {
             callResultsIntermediate = new SmoothData(callResultsIntermediate, i, 
