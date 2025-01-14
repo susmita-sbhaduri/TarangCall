@@ -122,58 +122,6 @@ public class Trends {
         }
 
 //      ###################################lastcallversiontwo###########################################
-//        String lastCallVersionTwo = "";
-//        Double retraceVersionTwo = 0.0;
-//        Double riseLength = 0.0;
-//        Double fallLength = 0.0;
-//        if (inputCallVersionTwo.equals("buy")) {
-//            if ((inputLastTransationPriceList.size() - (endLoop + 3)) == 1) {
-//                retraceDown = inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 2).getLastTransactionPrice()
-//                        - inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 1).getLastTransactionPrice();
-//                retraceUp = inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 2).getLastTransactionPrice()
-//                        - outputLastTransationPriceList.get(outputLastTransationPriceList.size() - 1).getLastTransactionPrice();
-//                riseLength = inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 1).getLastTransactionPrice()
-//                        - outputLastTransationPriceList.get(outputLastTransationPriceList.size() - 1).getLastTransactionPrice();
-//
-//                if (riseLength < ((TARANGPARAMS.MARGIN_VALUE / 100) * outputLastTransationPriceList.get(outputLastTransationPriceList.size() - 1).getLastTransactionPrice())) {
-//                    lastCallVersionTwo = "buy";
-//                } else {
-//                    if (((retraceDown / retraceUp) * 100) > 62) {
-//                        lastCallVersionTwo = "buy";
-//                    } else {
-//                        if (((retraceDown / retraceUp) * 100) < 38.2) {
-//                            lastCallVersionTwo = "sell";
-//                        } else {
-//                            lastCallVersionTwo = "no";
-//                            if (callGenerationLavel == 3) {
-//                                retraceVersionTwo = (retraceDown / retraceUp) * 100;
-//                            }
-//                        }
-//                    }
-//                }
-//            } else {
-//                riseLength = inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 1).getLastTransactionPrice()
-//                        - outputLastTransationPriceList.get(outputLastTransationPriceList.size() - 1).getLastTransactionPrice();
-//                if (riseLength < ((TARANGPARAMS.MARGIN_VALUE / 100) * outputLastTransationPriceList.get(outputLastTransationPriceList.size() - 1).getLastTransactionPrice())) {
-//                    lastCallVersionTwo = "buy";
-//                } else {
-//                    lastCallVersionTwo = "sell";
-//                }
-//            }
-//        }
-//
-//        if (inputCallVersionTwo.equals("sell")) {
-//            fallLength = outputLastTransationPriceList.get(outputLastTransationPriceList.size() - 1).getLastTransactionPrice()
-//                    - inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 1).getLastTransactionPrice();
-//            if (fallLength < ((TARANGPARAMS.MARGIN_VALUE / 100) * outputLastTransationPriceList.get(outputLastTransationPriceList.size() - 1).getLastTransactionPrice())) {
-//                lastCallVersionTwo = "sell";
-//            } else {
-//                lastCallVersionTwo = "buy";
-//            }
-//
-//        }
-        
-        //###################################lastcallversiontwoVolume###########################################
         String lastCallVersionTwo = "";
         Double retraceVersionTwo = 0.0;
         Double riseLength = 0.0;
@@ -212,24 +160,6 @@ public class Trends {
                     lastCallVersionTwo = "sell";
                 }
             }
-//            ###########volume#####
-            if (lastCallVersionTwo.equals("buy")) {//price falling or down trend
-                if (volumeTrendFlag == TARANGPARAMS.DOWNTREND_VOLUME) {
-                    lastCallVersionTwo = "buy";
-                }
-                if (volumeTrendFlag == TARANGPARAMS.UPTREND_VOLUME) {
-                    lastCallVersionTwo = "sell";
-                }
-            } else {
-                if (lastCallVersionTwo.equals("sell")) {//price rising or up trend
-                    if (volumeTrendFlag == TARANGPARAMS.DOWNTREND_VOLUME) {
-                        lastCallVersionTwo = "sell";
-                    }
-                    if (volumeTrendFlag == TARANGPARAMS.UPTREND_VOLUME) {
-                        lastCallVersionTwo = "buy";
-                    }
-                }
-            }
         }
 
         if (inputCallVersionTwo.equals("sell")) {
@@ -240,25 +170,33 @@ public class Trends {
             } else {
                 lastCallVersionTwo = "buy";
             }
+
+        }
+        
+        //###################################lastcallversionthreeVolume###########################################
+        String lastCallVersionThree = "";
+       
 //            ###########volume#####
-            if (lastCallVersionTwo.equals("buy")) { //price is falling or downtrend
+        if (callGenerationLavel == TARANGPARAMS.CALL_GENERATION_LAYERS) {
+            if (lastCallVersionTwo.equals("buy")) {//price falling or down trend
                 if (volumeTrendFlag == TARANGPARAMS.DOWNTREND_VOLUME) {
-                    lastCallVersionTwo = "buy";
+                    lastCallVersionThree = "buy";
                 }
                 if (volumeTrendFlag == TARANGPARAMS.UPTREND_VOLUME) {
-                    lastCallVersionTwo = "sell";
+                    lastCallVersionThree = "sell";
                 }
             } else {
-                if (lastCallVersionTwo.equals("sell")) { //price uptrend
+                if (lastCallVersionTwo.equals("sell")) {//price rising or up trend
                     if (volumeTrendFlag == TARANGPARAMS.DOWNTREND_VOLUME) {
-                        lastCallVersionTwo = "sell";
+                        lastCallVersionThree = "sell";
                     }
                     if (volumeTrendFlag == TARANGPARAMS.UPTREND_VOLUME) {
-                        lastCallVersionTwo = "buy";
+                        lastCallVersionThree = "buy";
                     }
                 }
             }
         }
+//            ###########volume#####        
         
         outputLastTransationPriceList.add(inputLastTransationPriceList.get(inputLastTransationPriceList.size() - 1));
         callResultsIntermediate.setIntermediateLTPList(outputLastTransationPriceList);
@@ -266,7 +204,7 @@ public class Trends {
         callResultsIntermediate.setCallVersionTwo(lastCallVersionTwo);
         callResultsIntermediate.setRetraceVersionOne(retraceVersionOne);
         callResultsIntermediate.setRetraceVersionTwo(retraceVersionTwo);
-        
+        callResultsIntermediate.setCallVersionThree(lastCallVersionThree);
         
         return callResultsIntermediate;
     }

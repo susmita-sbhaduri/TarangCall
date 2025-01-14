@@ -38,7 +38,7 @@ public class CallFactory {
             //TarangUtils.printLTP(callResultsIntermediate.getIntermediateLTPList());
         }        
         CallResults callResults = callResultsIntermediate;
-        System.out.println(callResults.getScripId()+" : "+callResults.getCallVersionOne()+" "+callResults.getCallVersionTwo()+" "+callResults.getCallGenerationTimeStamp());
+        System.out.println(callResults.getScripId()+" : "+callResults.getCallVersionOne()+" "+callResults.getCallVersionTwo()+" "+callResults.getCallVersionThree()+" "+callResults.getCallGenerationTimeStamp());
         return new Results(callResults);        
     }
 }
