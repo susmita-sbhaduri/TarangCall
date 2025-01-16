@@ -10,6 +10,7 @@ import org.bhaduri.tarangcall.TARANGPARAMS;
 import org.bhaduri.tarangdto.CallResultsIntermediate;
 import org.bhaduri.tarangdto.LastTransactionPrice;
 
+
 /**
  *
  * @author bhaduri
@@ -17,6 +18,7 @@ import org.bhaduri.tarangdto.LastTransactionPrice;
 public class Trends {
     
     private CallResultsIntermediate callResultsIntermediate;
+    
     private List<LastTransactionPrice> inputLastTransationPriceList;
     private int callGenerationLavel;
     private List<LastTransactionPrice> outputLastTransationPriceList;
@@ -107,7 +109,7 @@ public class Trends {
                         lastCallVersionOne = "sell";
                     } else {
                         lastCallVersionOne = "no";
-                        if (callGenerationLavel == 3) {
+                        if (callGenerationLavel == TARANGPARAMS.CALL_GENERATION_LAYERS) {
                             retraceVersionOne = (retraceDown / retraceUp) * 100;
                         }
                     }
@@ -145,7 +147,7 @@ public class Trends {
                             lastCallVersionTwo = "sell";
                         } else {
                             lastCallVersionTwo = "no";
-                            if (callGenerationLavel == 3) {
+                            if (callGenerationLavel == TARANGPARAMS.CALL_GENERATION_LAYERS) {
                                 retraceVersionTwo = (retraceDown / retraceUp) * 100;
                             }
                         }
@@ -175,9 +177,9 @@ public class Trends {
         
         //###################################lastcallversionthreeVolume###########################################
         String lastCallVersionThree = "";
-       
+        
 //            ###########volume#####
-        if (callGenerationLavel == TARANGPARAMS.CALL_GENERATION_LAYERS) {
+        if (callGenerationLavel == TARANGPARAMS.CALL_GENERATION_LAYERS-2) {
             if (lastCallVersionTwo.equals("buy")) {//price falling or down trend
                 if (volumeTrendFlag == TARANGPARAMS.DOWNTREND_VOLUME) {
                     lastCallVersionThree = "buy";
@@ -195,6 +197,7 @@ public class Trends {
                     }
                 }
             }
+            TARANGPARAMS.CALL_THREE = lastCallVersionThree;
         }
 //            ###########volume#####        
         
@@ -204,7 +207,7 @@ public class Trends {
         callResultsIntermediate.setCallVersionTwo(lastCallVersionTwo);
         callResultsIntermediate.setRetraceVersionOne(retraceVersionOne);
         callResultsIntermediate.setRetraceVersionTwo(retraceVersionTwo);
-        callResultsIntermediate.setCallVersionThree(lastCallVersionThree);
+        callResultsIntermediate.setCallVersionThree(TARANGPARAMS.CALL_THREE);
         
         return callResultsIntermediate;
     }
