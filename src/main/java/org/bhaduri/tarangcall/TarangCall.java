@@ -4,13 +4,8 @@
 
 package org.bhaduri.tarangcall;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.bhaduri.tarangcall.scrips.ScripPrices;
 import org.bhaduri.tarangcall.scrips.Scrips;
-import org.bhaduri.tarangdbservice.services.MasterDataServices;
-import org.bhaduri.tarangdto.CallResults;
 
 
 /**
